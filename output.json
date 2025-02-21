@@ -1,0 +1,19 @@
+{
+    "logProducts": ["banana", "mango", "potato", "avocado", "coffee", "tea"],
+    "filteredByNameLength": [
+      { "product": "mango", "price": 6 },
+      { "product": "tea", "price": "" }
+    ],
+    "totalPrice": 26,
+    "concatenatedProductNames": "banana, mango, potato, avocado, coffee, tea",
+    "priceExtremes": "Highest: coffee. Lowest: banana.",
+    "objectTransformation": {
+      "0": { "name": "banana", "cost": "2" },
+      "1": { "name": "mango", "cost": 6 },
+      "2": { "name": "potato", "cost": " " },
+      "3": { "name": "avocado", "cost": "8" },
+      "4": { "name": "coffee", "cost": 10 },
+      "5": { "name": "tea", "cost": "" }
+    }
+  }
+  
