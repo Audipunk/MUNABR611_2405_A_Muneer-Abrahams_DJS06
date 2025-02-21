@@ -1,131 +1,91 @@
-// A list of provinces:
-const provinces = [
-  "Western Cape",
-  "Gauteng",
-  "Northern Cape",
-  "Eastern Cape",
-  "KwaZulu-Natal",
-  "Free State",
-];
+import React from "react";
 
-// A list of names:
-const names = [
-  "Ashwin",
-  "Sibongile",
-  "Jan-Hendrik",
-  "Sifso",
-  "Shailen",
-  "Frikkie",
-];
-
-// A list of products with prices:
+// A list of province
+const provinces = ['Western Cape', 'Gauteng', 'Northern Cape', 'Eastern Cape', 'KwaZulu-Natal', 'Free State'];
+const names = ['Ashwin', 'Sibongile', 'Jan-Hendrik', 'Sifso', 'Shailen', 'Frikkie'];
 const products = [
-  { product: "banana", price: "2" },
-  { product: "mango", price: 6 },
-  { product: "potato", price: " " },
-  { product: "avocado", price: "8" },
-  { product: "coffee", price: 10 },
-  { product: "tea", price: "" },
+  { product: 'banana', price: "2" },
+  { product: 'mango', price: 6 },
+  { product: 'potato', price: ' ' },
+  { product: 'avocado', price: "8" },
+  { product: 'coffee', price: 10 },
+  { product: 'tea', price: '' },
 ];
 
-// 1
-// ForEach Basics:forEach to log each name and each province to the console. Then, log each name with a matching province in the format "Name (Province)".
-names.forEach((name) => console.log(name));
-provinces.forEach((province) => console.log(province));
+const App = () => {
+  // ForEach Basics
+  const nameProvincePairs = names.map((name, index) => `${name} (${provinces[index]})`);
 
-// Loops through provinces object and uses index to add name
-provinces.forEach((province, i) => {
-  console.log(`${names[i]} (${province})`);
-  i++;
-});
+  // Uppercase Transformation
+  const uppercaseProvinces = provinces.map(province => province.toUpperCase());
 
-// 2
-// Uppercase Transformation: Use map to create a new array of province names in all uppercase. Log the new array to the console.
-const uppercaseProvinces = provinces.map((province) => {
-  return province.toUpperCase();
-});
-console.log(uppercaseProvinces);
+  // Name Lengths
+  const nameLengths = names.map(name => name.length);
 
-// 3
-// Name Lengths: Create a new array using map that contains the length of each name.
-const nameLengths = names.map((name) => {
-  return name.length;
-});
-console.log(nameLengths);
+  // Sorting Provinces Alphabetically
+  const sortedProvinces = [...provinces].sort();
 
-// 4
-// Sorting: Use sort to alphabetically sort the provinces.
-console.log(provinces.sort());
+  // Filtering Cape Provinces
+  const filteredProvinces = provinces.filter(province => !province.includes('Cape'));
+  const remainingProvincesCount = filteredProvinces.length;
 
-// 5
-// Filtering Cape: Use filter to remove provinces containing "Cape". Log the count of remaining provinces.
-const remainingProvinces = provinces.filter((province) => {
-  return !province.match("Cape");
-  // Returns the number of provinces that don't contain "Cape"
-}).length;
-console.log(remainingProvinces);
+  // Finding 'S' in Names
+  const hasS = names.map(name => name.toLowerCase().includes('s'));
 
-// 6
-// Finding 'S': Create a boolean array using map and some to determine if a name contains the letter 'S'.
-const findingS = names.map((name) => {
-  // Brakes names down into letters and checks for "S"
-  return name.split("").some((letter) => letter == "S");
-});
-console.log(findingS);
-
-// 7
-// Creating Object Mapping: Use reduce to transform the names array into an object mapping names to their respective provinces.
-const objectMapping = names.reduce((acc, name, i) => {
-  acc[name] = provinces[i];
-  return acc;
-}, {});
-console.log(objectMapping);
-
-// Advanced Exercises (Single console.log Execution)
-// For these exercises, wrap your logic in a single console.log statement:
-
-// 1
-// Log Products: Iterate over the products array, logging each product name.
-console.log(...products.map((item) => item.product));
-
-// 2
-// Filter by Name Length: Filter out products with names longer than 5 characters.
-console.log(products.filter((item) => item.product.length <= 5));
-
-// 3
-// Price Manipulation: Filter out products without prices, convert string prices to numbers, and calculate the total price using reduce.
-console.log(
-  products
-    // Filter out products without prices
-    .filter((item) => Number(item.price) >= 1)
-    // calculates the total price
-    .reduce((acc, currentValue) => acc + Number(currentValue.price), 0)
-);
-
-// 4
-// Concatenate Product Names: Use reduce to concatenate all product names into a single string.
-console.log(
-  products.reduce((acc, currentValue) => acc + currentValue.product, "")
-);
-
-// 5
-// Find Extremes in Prices: Identify the highest and lowest-priced items, returning a string formatted as "Highest: X. Lowest: Y."
-const minMaxPrice = products
-  // Filter out products without prices
-  .filter((item) => Number(item.price) >= 1)
-  // Converts to an object containg the prices
-  .map((item) => item.price);
-
-const min = Math.min(...minMaxPrice);
-const max = Math.max(...minMaxPrice);
-
-console.log(`Highest: ${max}`, "\n", `Lowest: ${min}`);
-
-// 6
-// Object Transformation: Using Object.entries and reduce, recreate the products object with keys 'name' and 'cost', maintaining their original values.
-console.log(
-  Object.entries(products).reduce((acc, [i, product]) => {
-    acc[i] = { name: product.product, cost: product.price };
+  // Creating Object Mapping
+  const nameProvinceMapping = names.reduce((acc, name, index) => {
+    acc[name] = provinces[index];
     return acc;
-  }, {})
-);
+  }, {});
+
+  // Advanced Exercises
+  const results = {
+    logProducts: products.map(p => p.product),
+    filteredByNameLength: products.filter(p => p.product.length <= 5),
+    totalPrice: products
+      .filter(p => String(p.price).trim() !== '')
+      .map(p => ({ ...p, price: Number(p.price) }))
+      .reduce((sum, p) => sum + p.price, 0),
+    concatenatedProductNames: products.map(p => p.product).join(', '),
+    priceExtremes: (() => {
+      const pricedProducts = products
+        .filter(p => String(p.price).trim() !== '')
+        .map(p => ({ ...p, price: Number(p.price) }));
+      const highest = pricedProducts.reduce((max, p) => (p.price > max.price ? p : max), pricedProducts[0]);
+      const lowest = pricedProducts.reduce((min, p) => (p.price < min.price ? p : min), pricedProducts[0]);
+      return `Highest: ${highest.product}. Lowest: ${lowest.product}.`;
+    })(),
+    objectTransformation: products.map(p => ({ name: p.product, cost: p.price }))
+  };
+
+  return (
+    <div>
+      <h1>Provinces and Products Analysis</h1>
+      <h2>ForEach Basics</h2>
+      <ul>{nameProvincePairs.map((pair, i) => (<li key={i}>{pair}</li>))}</ul>
+      
+      <h2>Uppercase Provinces</h2>
+      <p>{uppercaseProvinces.join(", ")}</p>
+      
+      <h2>Name Lengths</h2>
+      <p>{nameLengths.join(", ")}</p>
+      
+      <h2>Sorted Provinces</h2>
+      <p>{sortedProvinces.join(", ")}</p>
+      
+      <h2>Filtered Provinces</h2>
+      <p>Remaining provinces count: {remainingProvincesCount}</p>
+      
+      <h2>Finding 'S' in Names</h2>
+      <p>{JSON.stringify(hasS)}</p>
+      
+      <h2>Name to Province Mapping</h2>
+      <pre>{JSON.stringify(nameProvinceMapping, null, 2)}</pre>
+      
+      <h2>Advanced Exercises</h2>
+      <pre>{JSON.stringify(results, null, 2)}</pre>
+    </div>
+  );
+};
+
+export default App;
